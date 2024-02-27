@@ -4,9 +4,9 @@ import { authOptions } from "@/lib/next-auth";
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
-import { log } from '@logtail/next';
+import {log, withLogtail} from '@logtail/next';
 
-export const addTodo = async (formData: FormData) => {
+export const addTodo = withLogtail(async (formData: FormData) => {
     log.info("addTodo being handled");
     const session = await getServerSession(authOptions);
 
@@ -35,9 +35,9 @@ export const addTodo = async (formData: FormData) => {
         log.error("Error during adding TODO.", { error });
         console.log(error);
     }
-};
+});
 
-export const checkTodo = async (id: string, completed: boolean) => {
+export const checkTodo = withLogtail(async (id: string, completed: boolean) => {
     log.info("checkTodo being handled");
     const session = await getServerSession(authOptions);
 
@@ -61,9 +61,9 @@ export const checkTodo = async (id: string, completed: boolean) => {
     } catch (error) {
         log.error("Error during deleting TODO.", { error });
     }
-};
+});
 
-export const deleteTodo = async (id: string) => {
+export const deleteTodo = withLogtail(async (id: string) => {
     log.info("deleteTodo being handled");
     const session = await getServerSession(authOptions);
 
@@ -81,4 +81,4 @@ export const deleteTodo = async (id: string) => {
     }
 
     revalidatePath("/todos");
-};
+});
