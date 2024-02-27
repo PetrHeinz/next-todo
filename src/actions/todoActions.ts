@@ -35,6 +35,8 @@ export const addTodo = async (formData: FormData) => {
         log.error("Error during adding TODO.", { error });
         console.log(error);
     }
+
+    await log.flush();
 };
 
 export const checkTodo = async (id: string, completed: boolean) => {
@@ -61,6 +63,8 @@ export const checkTodo = async (id: string, completed: boolean) => {
     } catch (error) {
         log.error("Error during deleting TODO.", { error });
     }
+
+    await log.flush();
 };
 
 export const deleteTodo = async (id: string) => {
@@ -81,4 +85,5 @@ export const deleteTodo = async (id: string) => {
     }
 
     revalidatePath("/todos");
+    await log.flush();
 };
