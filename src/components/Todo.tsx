@@ -38,6 +38,7 @@ const Todo = ({ id, text, completed, setOptimisticTodos }: TodoProps) => {
                         });
 
                         startTransition(() => {
+                            // @ts-ignore
                             checkTodo(id, !completed);
                         });
                     }}
@@ -60,6 +61,7 @@ const Todo = ({ id, text, completed, setOptimisticTodos }: TodoProps) => {
                             return prev.filter((todo) => todo.id !== id);
                         });
 
+                        // @ts-ignore
                         deleteTodo(id);
                     }}
                     className="ml-auto text-red-300"
