@@ -7,6 +7,7 @@ import { revalidatePath } from "next/cache";
 import { log } from '@logtail/next';
 
 export const addTodo = async (formData: FormData) => {
+    log.info("addTodo being handled");
     const session = await getServerSession(authOptions);
 
     try {
@@ -37,9 +38,12 @@ export const addTodo = async (formData: FormData) => {
 };
 
 export const checkTodo = async (id: string, completed: boolean) => {
+    log.info("checkTodo being handled");
     const session = await getServerSession(authOptions);
 
     try {
+        log.info("Checking TODO.", { session, id, completed });
+
         await prisma.todo.update({
             select: {
                 completed: true,
@@ -54,20 +58,27 @@ export const checkTodo = async (id: string, completed: boolean) => {
         });
 
         revalidatePath("/todos");
-    } catch (error) {}
+    } catch (error) {
+        log.error("Error during deleting TODO.", { error });
+    }
 };
 
 export const deleteTodo = async (id: string) => {
+    log.info("deleteTodo being handled");
     const session = await getServerSession(authOptions);
 
     try {
+        log.info("Deleting TODO.", { session, id });
+
         await prisma.todo.delete({
             where: {
                 id: id,
                 userId: session?.user.id,
             },
         });
-    } catch (error) {}
+    } catch (error) {
+        log.error("Error during deleting TODO.", { error });
+    }
 
     revalidatePath("/todos");
 };
