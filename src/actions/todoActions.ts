@@ -4,12 +4,15 @@ import { authOptions } from "@/lib/next-auth";
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
+import { log } from '@logtail/next';
 
 export const addTodo = async (formData: FormData) => {
     const session = await getServerSession(authOptions);
 
     try {
         const todoText = formData.get("todotext") as string;
+
+        log.info("Adding new TODO.", { session, todoText, formData });
 
         if (!todoText) {
             throw new Error("Todo text is required");
@@ -28,6 +31,7 @@ export const addTodo = async (formData: FormData) => {
 
         revalidatePath("/todos");
     } catch (error) {
+        log.error("Error during adding TODO.", { error });
         console.log(error);
     }
 };
