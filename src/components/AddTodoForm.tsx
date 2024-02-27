@@ -26,6 +26,7 @@ const AddTodoForm = ({ setOptimisticTodos }: AddTodoFormProps) => {
 
                 setOptimisticTodos((prev) => [optimisticTodo, ...prev]);
 
+                // @ts-ignore
                 await addTodo(formData);
 
                 formRef.current?.reset();
